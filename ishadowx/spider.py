@@ -46,10 +46,6 @@ def system_script(vpn):
 
 if __name__ == '__main__':
     result = spider()
-    if result is None:
-        print('No Data, Exit !')
-        exit()
-    else:
-        print('vpn_script is running !')
-        system_script(result)
-        exit()
+    print('vpn_script is running !')
+    system_script(result)
+    exit()
