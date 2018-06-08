@@ -1,25 +1,32 @@
-# coding: utf8
+# coding: utf-8
+
+''' ishadowx 翻墙脚本
+1. 连续请求5次不成功，将退出程序
+2. 返回12条信息，将随机选取一条进行连接，不支持手动
+3. 执行一次，只会连接一次，失效后请重新执行
+'''
 
 import requests as rq
 from random import randint
 from requests.exceptions import RequestException
+from fake_useragent import UserAgent
 from lxml import etree
 import os
+import time
 
-MAX_RETRY = 10
-headers = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36',
-}
+MAX_RETRY = 5
+ua = UserAgent()
 
 
 def spider(cnt=0):
-    if cnt >= MAX_RETRY:
+    if cnt <= MAX_RETRY:
+        print('Preparing to obtain vpn:  {} / {}'.format(cnt + 1, MAX_RETRY))
+    else:
         print('The number of connections has reached a maximum, Exit now!')
         exit()
-    else:
-        print('Preparing to obtain vpn:  {} / {}'.format(cnt + 1, MAX_RETRY))
 
     try:
+        headers = {'User-Agent': ua.random}
         r = rq.get(url='http://ss.ishadowx.com/', headers=headers, timeout=10)
 
         if r.status_code == 200:
@@ -34,11 +41,12 @@ def spider(cnt=0):
         else:
             return spider(cnt + 1)
     except RequestException:
+        time.sleep(2)
         return spider(cnt + 1)
 
 
 def system_script(vpn):
-    i = randint(0, len(vpn[0])-1)
+    i = randint(0, len(vpn[0]) - 1)
     command = 'sslocal -b 127.0.0.1 -l 1080 -s {} -p {} -k {} -m {}'.format(vpn[0][i], vpn[1][i].strip(), vpn[2][i].strip(), vpn[3][i][7:])
     print(command)
     os.system(command)
