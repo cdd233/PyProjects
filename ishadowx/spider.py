@@ -15,12 +15,12 @@ import os
 import time
 
 MAX_RETRY = 5
-ua = UserAgent()
+ua = UserAgent(use_cache_server=False)
 
 
-def spider(cnt=0):
+def spider(cnt=1):
     if cnt <= MAX_RETRY:
-        print('Preparing to obtain vpn:  {} / {}'.format(cnt + 1, MAX_RETRY))
+        print('Preparing to obtain vpn:  {} / {}'.format(cnt, MAX_RETRY))
     else:
         print('The number of connections has reached a maximum, Exit now!')
         exit()
