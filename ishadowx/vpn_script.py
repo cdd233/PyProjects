@@ -15,7 +15,7 @@ import os
 import time
 
 MAX_RETRY = 5
-ua = UserAgent(verify_ssl=False)
+ua = UserAgent(use_cache_server=False)
 
 
 def spider(cnt=1):
@@ -53,8 +53,8 @@ def system_script(vpn):
 
 
 if __name__ == '__main__':
-    result = spider()
     print('vpn_script is running !')
     print('Source Link： https://github.com/demoToGrn/PyProjects/tree/master/ishadowx')
+    result = spider()
     system_script(result)
     exit()
